@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
+import { Op } from "sequelize";
 import Content from "./models/Content.model";
 import { ContentStatus } from "./enums/ContentStatus.enum";
 import User from "./models/User.model";
@@ -29,7 +30,29 @@ app.use(bodyParser.json());
 
 // Get users route
 app.get("/users", async (req: Request, res) => {
-  const users = await User.findAll();
+  const queryString = req.query.query;
+
+  let dbOptions = {};
+  if (queryString && queryString.length) {
+    dbOptions = {
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.substring]: queryString
+            }
+          },
+          {
+            tags: {
+              [Op.substring]: queryString
+            }
+          }
+        ]
+      }
+    }
+  }
+
+  const users = await User.findAll(dbOptions);
   res.json(users);
 });
 
