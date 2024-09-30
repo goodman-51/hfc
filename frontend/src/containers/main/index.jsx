@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Container, UserContainer, UsersListContainer } from "./styles";
 import { onLoadDashboardUsers } from "../../redux/actions/dashboard-actions";
+import { User } from "../../components/User";
 
 export const MainContainer = () => {
   const dispatch = useDispatch();
@@ -20,8 +21,7 @@ export const MainContainer = () => {
       <UsersListContainer>
         {users.map((user) => (
           <UserContainer key={`user-${user.id}`}>
-            <h3>{user.name}</h3>
-            <button>View Content</button>
+            <User user={user}/>
           </UserContainer>
         ))}
       </UsersListContainer>
