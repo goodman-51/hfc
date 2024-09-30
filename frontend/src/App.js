@@ -19,6 +19,7 @@ const GlobalStyle = createGlobalStyle`
 const initialState = {
   dashboard: {
     users: [],
+    posts: {},
   },
 };
 
