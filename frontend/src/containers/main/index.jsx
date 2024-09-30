@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Container, UserContainer, UsersListContainer } from "./styles";
+import { Container, UserContainer, UsersListContainer, StyledUser, ButtonPrimary } from "./styles";
 import { onLoadDashboardUsers } from "../../redux/actions/dashboard-actions";
-import { User } from "../../components/User";
 
 export const MainContainer = () => {
   const dispatch = useDispatch();
 
+  const [searchQuery, setSearchQuery] = useState('');
   const users = useSelector((state) => state.dashboard.users);
 
   useEffect(() => {
@@ -16,12 +16,20 @@ export const MainContainer = () => {
 
   return (
     <Container>
-      <h1>Users</h1>
+      <input
+        type="text"
+        placeholder="Search users"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
+      <ButtonPrimary onClick={() => dispatch(onLoadDashboardUsers(searchQuery))}>
+        SEARCH
+      </ButtonPrimary>
 
       <UsersListContainer>
         {users.map((user) => (
           <UserContainer key={`user-${user.id}`}>
-            <User user={user}/>
+            <StyledUser user={user}/>
           </UserContainer>
         ))}
       </UsersListContainer>
